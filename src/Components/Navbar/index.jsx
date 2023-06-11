@@ -35,7 +35,7 @@ const Navbar = () => {
         >
           Gestion des Utilisateurs
         </Button>
-        <Button
+        {/* <Button
           onClick={() => {
             navigate('/trucks')
           }}
@@ -55,7 +55,7 @@ const Navbar = () => {
           }}
         >
           Gestion des Livraisons
-        </Button>
+        </Button> */}
         <Button
           onClick={() => {
             dispatch({ type: 'login', user: null })

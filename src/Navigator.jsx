@@ -17,9 +17,10 @@ const Navigator = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<Users />} />
-            <Route path="/trucks" element={<Trucks />} />
+            {/* <Route path="/trucks" element={<Trucks />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/livraisons" element={<Livraisons />} />
+            <Route path="/livraisons" element={<Livraisons />} /> */}
+            <Route path="*" element={<>404</>} />
           </Routes>
         </>
       ) : (

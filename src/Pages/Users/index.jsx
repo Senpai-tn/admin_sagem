@@ -4,10 +4,12 @@ import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
+import Swal from 'sweetalert2'
 
 const Users = () => {
   const [listUsers, setListUsers] = useState([])
   const [open, setOpen] = useState(false)
+  const [openDelete, setOpenDelete] = useState(false)
   const [userSelected, setUserSelected] = useState(null)
   const { control, handleSubmit, setError } = useForm({
     defaultValues: { duree: '' },
@@ -37,15 +39,32 @@ const Users = () => {
       setError('duree', { message: 'Vous devez taper un entier' })
     }
   }
-  const supprimerUser = (user) => {
-    axios
-      .put(process.env.REACT_APP_URL + '/user', {
-        id: user._id,
-        deletedAt: new Date(),
-      })
-      .then((response) => {
-        getUsers()
-      })
+  const supprimerUser = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .put(process.env.REACT_APP_URL + '/user', {
+            id: userSelected._id,
+            deletedAt: new Date(),
+          })
+          .then((response) => {
+            Swal.fire(
+              'Supprimé!',
+              "L'utilisateur " + userSelected.firstName + ' a été supprimé',
+              'success'
+            )
+            getUsers()
+          })
+      }
+    })
   }
 
   useEffect(() => {
@@ -122,7 +141,8 @@ const Users = () => {
                     <Button
                       color="error"
                       onClick={() => {
-                        supprimerUser(u)
+                        setUserSelected(u)
+                        setOpenDelete(true)
                       }}
                     >
                       Supprimer
